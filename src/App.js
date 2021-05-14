@@ -1,38 +1,112 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, clearUser } from "./slices/userSlice";
 import { signIn, signUp, userUpdate } from "./api/userFetch";
+import  Loading  from "./components/Loading"
+import Nav from "./components/Nav"
+import SignUpIn from "./containers/SignUpIn"
+
 
 function App() {
-  const user = useSelector((state) => state.user.current);
-  const dispatch = useDispatch();
-  console.log(user);
+  //STATE
+  const [showSignUpIn, setShowSignUpIn] = useState(false);
+  const [loading, setLoading] = useState(false)
 
-  const handleLogin = () => {
-    // fetch(`https://doodl-api.herokuapp.com/login`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Accept": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     user_name: "aleksa",
-    //     password: "hyojin",
-    //     bio: ""
-    //   }),
-    // })
-    // .then((resp) => resp.json())
-    signIn().then((data) => {
-      console.log(data)
-    });
+  //MODAL
+  const handleClose = () => {
+    setShowSignUpIn(false);
+  };
+
+  const handleShow = () => {
+    setShowSignUpIn(true);
   };
 
   return (
-    <div className="App">
-      <button onClick={handleLogin}>set user</button>
-      <button onClick={() => dispatch(clearUser())}>clear user</button>
-      <div>{user}</div>
-    </div>
+    
+    <>
+        <Nav
+          // getSearchTerm={this.getSearchTerm}
+          // currentUser={this.state.currentUser}
+          // handleLogout={handleLogout}
+          handleShow={handleShow}
+          // handleNewCanvasShow={this.handleNewCanvasShow}
+          // doodleFetch={this.doodleFetch}
+          // navigateProfileHome={this.navigateProfileHome}
+        />
+        {/* <NewCanvas
+          user={this.state.currentUser}
+          addNewDoodle={this.addNewDoodle}
+          show={this.state.showNewCanvas}
+          onHide={this.handleNewCanvasClose}
+        /> */}
+
+        <main>
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <>
+                  <SignUpIn
+                    // handleLogin={handleLogin}
+                    onHide={handleClose}
+                    show={showSignUpIn}
+                  />
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <>
+                      {/* <DoodleContainer
+                        doodles={this.filterDoodles()}
+                        user={this.state.currentUser}
+                        updateLike={this.updateLike}
+                        page={this.state.page}
+                      />
+                      {this.state.totalPages <= 1  ? (
+                        ""
+                      ) : (
+                        <Pagination
+                          handleChangePage={this.handleChangePage}
+                          page={this.state.page}
+                          totalPages={this.state.totalPages}
+                        />
+                      )} */}
+                    </>
+                  )}
+                </>
+              )}
+            />
+            <Route
+              path="/profile"
+              render={(routeProps) => (
+                <>
+                  {!this.state.currentUser ? (
+                    <Loading />
+                  ) : (
+                    <>
+                      {/* <Profile
+                        user={this.state.currentUser}
+                        updateLike={this.updateLike}
+                        handleNew={this.handleAddNewDoodle}
+                        userUpdate={this.userUpdate}
+                        userDelete={this.userDelete}
+                        renderExisting={this.renderExisting}
+                        handleEditCanvasShow={this.handleEditCanvasShow}
+                        newDoodle={this.state.newDoodleProfile}
+                        updateProfileClicked={this.updateProfileClicked}
+                        profileClicked={this.state.profileClicked}
+                        // navigateProfileHome={this.navigateProfileHome()}
+                        {...routeProps}
+                      /> */}
+                    </>
+                  )}
+                </>
+              )}
+            />
+          </Switch>
+        </main>
+      </>
   );
 }
 

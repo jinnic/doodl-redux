@@ -1,36 +1,36 @@
 //USER SIGN IN
-export const signIn = () => {
+export const signIn = (data) => {
     return fetch(`https://doodl-api.herokuapp.com/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
     },
-    body: JSON.stringify({user_name: 'aleksa', password: 'hyojin', bio: ''}),
+    body: JSON.stringify(data),
   })
     .then((resp) => resp.json())
 };
 
 //SIGN UP
-export const signUp = () => {
-  fetch(`https://doodl-api.herokuapp.com/users`, {
+export const signUp = (data) => {
+  return fetch(`https://doodl-api.herokuapp.com/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    body: JSON.stringify(this.state),
+    body: JSON.stringify(data),
   })
     .then((resp) => resp.json())
-    .then((data) => {
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        this.props.handleLogin(data.user);
-        this.props.onHide();
-      } else {
-        this.setState({ errors: data.error });
-      }
-    });
+    // .then((data) => {
+    //   if (data.token) {
+    //     localStorage.setItem("token", data.token);
+    //     this.props.handleLogin(data.user);
+    //     this.props.onHide();
+    //   } else {
+    //     this.setState({ errors: data.error });
+    //   }
+    // });
 };
 
 //USER UPDATE
