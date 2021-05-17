@@ -47,7 +47,7 @@ export const userUpdate = (user, id) => {
 
     body: JSON.stringify(user),
   };
-  fetch(`https://doodl-api.herokuapp.com/users/${id}`, config)
+  return fetch(`https://doodl-api.herokuapp.com/users/${id}`, config)
     .then((r) => r.json())
     .then((updatedUser) => {
       this.setState(

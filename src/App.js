@@ -6,12 +6,15 @@ import { signIn, signUp, userUpdate } from "./api/userFetch";
 import  Loading  from "./components/Loading"
 import Nav from "./components/Nav"
 import SignUpIn from "./containers/SignUpIn"
+import DoodleContainer from './containers/DoodleContainer'
+import Pagination from './containers/Pagination'
 
 
 function App() {
   //STATE
   const [showSignUpIn, setShowSignUpIn] = useState(false);
   const [loading, setLoading] = useState(false)
+  const totalPages = useSelector(state => state.doodle.totalPages)
 
   //MODAL
   const handleClose = () => {
@@ -57,21 +60,13 @@ function App() {
                     <Loading />
                   ) : (
                     <>
-                      {/* <DoodleContainer
-                        doodles={this.filterDoodles()}
-                        user={this.state.currentUser}
-                        updateLike={this.updateLike}
-                        page={this.state.page}
+                      <DoodleContainer
                       />
-                      {this.state.totalPages <= 1  ? (
+                      {totalPages <= 1  ? (
                         ""
                       ) : (
-                        <Pagination
-                          handleChangePage={this.handleChangePage}
-                          page={this.state.page}
-                          totalPages={this.state.totalPages}
-                        />
-                      )} */}
+                        <Pagination/>
+                      )}
                     </>
                   )}
                 </>

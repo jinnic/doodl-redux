@@ -8,11 +8,14 @@ export const doodleSlice = createSlice({
   name: 'doodle',
   initialState:{
     all: [],
-    user: []
+    user: [],
+    page: 1,
+    totalPages: 1 
   },
   reducers:{
     setDoodles: (state, action) => {
-      state.all = action.payload
+      state.all = action.payload.doodles
+      state.totalPages = action.payload.total_pages
     },
     setUserDoodles: (state, action) => {
       state.user = action.payload
@@ -34,9 +37,18 @@ export const doodleSlice = createSlice({
     deleteDoodle: (state, action) =>{
       const updatedDoods = state.user.filter(doodle => doodle.id !== action.payload)
       state.user = updatedDoods
+    },
+    resetPage: (state) => {
+      state.page = 1;
+    },
+    updatePage: (state, action) => {
+      state.page += action.payload
+    },
+    setTotalPage: (state, action) => {
+      state.totalPage = action.payload
     }
   }
 })
 
-export const { setDoodles, setUserDoodles, addDoodle, updateDoodle, deleteDoodle} = doodleSlice.actions;
+export const { setDoodles, setUserDoodles, addDoodle, updateDoodle, deleteDoodle, resetPage, updatePage, setTotalPage } = doodleSlice.actions;
 export default doodleSlice.reducer;
