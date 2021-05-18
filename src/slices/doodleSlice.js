@@ -43,6 +43,7 @@ export const doodleSlice = createSlice({
     },
     updatePage: (state, action) => {
       state.page += action.payload
+      console.log(state.page)
     },
     setTotalPage: (state, action) => {
       state.totalPage = action.payload
