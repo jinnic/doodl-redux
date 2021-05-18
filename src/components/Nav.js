@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
+import { doodleFetch } from "../api/doodleFetch";
 import { clearUser } from "../slices/userSlice"
+import { setLoadingFalse , setLoadingTrue} from "../slices/loadingSlice";
+import { setDoodles, resetPage } from "../slices/doodleSlice"
+import { setModalTrue } from "../slices/modalSlice"
 // import Search from "./Search"
-// import { ReactComponent as Logo } from './doodl-logo.svg';
+import { ReactComponent as Logo } from './doodl-logo.svg';
 
 const Nav = (props) =>{
-  const { getSearchTerm, handleShow, handleNewCanvasShow, doodleFetch, navigateProfileHome } = props
+  const { getSearchTerm, handleShow, handleNewCanvasShow, navigateProfileHome } = props
   const currentUser = useSelector((state) => state.user.current);
   const dispatch = useDispatch();
 
@@ -15,9 +19,17 @@ const Nav = (props) =>{
     localStorage.removeItem("token");
   }
 
+  const goHomePage = () =>{
+    dispatch(setLoadingTrue())
+    doodleFetch().then(data => {
+      dispatch(setDoodles(data))
+      dispatch(resetPage())
+      dispatch(setLoadingFalse())
+    })
+  }
   return (
     <nav className="navbar fixed-top navbar-expand-md justify-content-center">
-    {/* <Link to='/' onClick={doodleFetch} className="navbar-brand d-flex w-50 mr-auto"><Logo className='logo'/></Link> */}
+    <Link to='/' onClick={goHomePage} className="navbar-brand d-flex w-50 mr-auto"><Logo className='logo'/></Link>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
        <span className="navbar-toggler-icon">MENU</span>
      </button>
@@ -40,7 +52,7 @@ const Nav = (props) =>{
              <Link to='/profile' value="profile" onClick={navigateProfileHome} className='nav-link'>Profile</Link>
            </li>
            <li className="nav-item">
-               <button data-target="#newCanvasModal" className='nav-link new-button' onClick={handleNewCanvasShow}>Draw Doodle</button>
+               <button data-target="#newCanvasModal" className='nav-link new-button' onClick={()=>dispatch(setModalTrue())}>Draw Doodle</button>
            </li>
            <li className="nav-item">
              <Link to='/' onClick={handleLogout} className='nav-link'>Log Out</Link>

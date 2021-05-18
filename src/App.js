@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser, clearUser } from "./slices/userSlice";
-import { signIn, signUp, userUpdate } from "./api/userFetch";
+import { doodleFetch } from "./api/doodleFetch";
+import { setDoodles } from './slices/doodleSlice'
 import  Loading  from "./components/Loading"
 import Nav from "./components/Nav"
 import SignUpIn from "./containers/SignUpIn"
 import DoodleContainer from './containers/DoodleContainer'
 import Pagination from './containers/Pagination'
-
+import NewCanvas from './containers/NewCanvas'
 
 function App() {
   //STATE
   const [showSignUpIn, setShowSignUpIn] = useState(false);
-  const [loading, setLoading] = useState(false)
   const totalPages = useSelector(state => state.doodle.totalPages)
-
+  const loading = useSelector(state => state.loading.status)
+  const dispatch = useDispatch();
   //MODAL
   const handleClose = () => {
     setShowSignUpIn(false);
@@ -25,24 +25,31 @@ function App() {
     setShowSignUpIn(true);
   };
 
+  // There might be some problem with Profile
+  // Basically wrap useEffect with if statement
+  // based on router location
+  useEffect(() => {
+    doodleFetch().then((data) => {
+        console.log(data)
+        dispatch(setDoodles(data))
+    });
+  }, []);
+
   return (
     
     <>
         <Nav
           // getSearchTerm={this.getSearchTerm}
-          // currentUser={this.state.currentUser}
-          // handleLogout={handleLogout}
           handleShow={handleShow}
           // handleNewCanvasShow={this.handleNewCanvasShow}
-          // doodleFetch={this.doodleFetch}
           // navigateProfileHome={this.navigateProfileHome}
         />
-        {/* <NewCanvas
-          user={this.state.currentUser}
-          addNewDoodle={this.addNewDoodle}
-          show={this.state.showNewCanvas}
-          onHide={this.handleNewCanvasClose}
-        /> */}
+        <NewCanvas 
+          // user={this.state.currentUser}
+          // addNewDoodle={this.addNewDoodle}
+          // show={this.state.showNewCanvas}
+          // onHide={this.handleNewCanvasClose}
+        /> 
 
         <main>
           <Switch>

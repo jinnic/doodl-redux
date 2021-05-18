@@ -18,6 +18,7 @@ export const doodleSlice = createSlice({
       state.totalPages = action.payload.total_pages
     },
     setUserDoodles: (state, action) => {
+      //might need to use spread adding new payload to current state
       state.user = action.payload
     },
     addDoodle: (state, action) => {

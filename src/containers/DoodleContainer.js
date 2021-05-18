@@ -1,20 +1,11 @@
 import React, { useEffect } from "react";
-import { doodleFetch } from "../api/doodleFetch";
 import { useSelector, useDispatch } from "react-redux";
-import { setDoodles } from '../slices/doodleSlice'
 import DoodleCard from "./DoodleCard";
 
 const DoodleContainer = () => {
-  const dispatch = useDispatch();
   const doodles = useSelector(state => state.doodle.all)
   const currentUser = useSelector(state => state.user.current)
-
-  useEffect(() => {
-    doodleFetch().then((data) => {
-        console.log(data)
-        dispatch(setDoodles(data))
-    });
-  }, []);
+  
 
   const renderDoodle = () => {
     return doodles.slice(0, 6).map((doodle) => (
