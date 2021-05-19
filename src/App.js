@@ -30,7 +30,6 @@ function App() {
   // based on router location
   useEffect(() => {
     doodleFetch().then((data) => {
-        console.log(data)
         dispatch(setDoodles(data))
     });
   }, []);

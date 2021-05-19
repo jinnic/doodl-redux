@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updatePage, setTotalPages, setDoodles } from "../slices/doodleSlice";
-import { setLoadingTrue, setLoadingFalse } from "../slices/loadingSlice"
+import { setLoadingTrue, setLoadingFalse } from "../slices/loadingSlice";
 import { updatePagination } from "../api/doodleFetch";
-import store from '../store';
+import store from "../store";
 
-const Pagination = ( ) => {
+const Pagination = () => {
   const page = useSelector((state) => state.doodle.page);
   //const page = store.getState().doodle.page
   const totalPages = useSelector((state) => state.doodle.totalPages);
@@ -13,14 +13,15 @@ const Pagination = ( ) => {
 
   const handleChangePage = (num) => {
     if (page + num >= 1) {
-        dispatch(updatePage(num))
-        const updatedPage = store.getState().doodle.page
-        dispatch(setLoadingTrue())
-        updatePagination(updatedPage)
-        .then((data) => {
-            dispatch(setDoodles(data))
-            dispatch(setLoadingFalse())
-        })
+      dispatch(updatePage(num));
+
+      if (num > 0) {
+        dispatch(setLoadingTrue());
+        const updatedPage = store.getState().doodle.page;
+        updatePagination(updatedPage).then((data) => {
+          dispatch(setDoodles(data));
+        }).then(() => dispatch(setLoadingFalse()));
+      }
     }
   };
 

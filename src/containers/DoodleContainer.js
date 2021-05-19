@@ -5,10 +5,14 @@ import DoodleCard from "./DoodleCard";
 const DoodleContainer = () => {
   const doodles = useSelector(state => state.doodle.all)
   const currentUser = useSelector(state => state.user.current)
+  const page = useSelector((state) => state.doodle.page);
+  const sliceStart = (page - 1) * 6;
+  const sliceEnd = sliceStart + 6;
+  
   
 
   const renderDoodle = () => {
-    return doodles.slice(0, 6).map((doodle) => (
+    return doodles.slice(sliceStart, sliceEnd).map((doodle) => (
       <DoodleCard
         key={doodle.id}
         doodle={doodle}

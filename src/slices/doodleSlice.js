@@ -14,7 +14,13 @@ export const doodleSlice = createSlice({
   },
   reducers:{
     setDoodles: (state, action) => {
-      state.all = action.payload.doodles
+      const combinedDoodles = [...state.all, ...action.payload.doodles];
+        const uniqueDoodles = Array.from(
+          new Set(combinedDoodles.map((a) => a.id))
+        ).map((id) => {
+          return combinedDoodles.find((a) => a.id === id);
+        });
+      state.all = uniqueDoodles
       state.totalPages = action.payload.total_pages
     },
     setUserDoodles: (state, action) => {
@@ -23,7 +29,8 @@ export const doodleSlice = createSlice({
     },
     addDoodle: (state, action) => {
       //action.payload.location === "home" => add to doodle.all
-      state.user = [action.payload, ...state.user]
+      // state.user = [action.payload, ...state.user]
+      state.all = [action.payload, ...state.all]
     },
     updateDoodle: (state, action) => {
       const updatedDoods = state.user.map((doodle) => {
