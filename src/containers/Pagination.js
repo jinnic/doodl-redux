@@ -1,14 +1,16 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updatePage, setTotalPages, setDoodles } from "../slices/doodleSlice";
+import { updatePage, setTotalPages, setDoodles, setUserDoodles } from "../slices/doodleSlice";
 import { setLoadingTrue, setLoadingFalse } from "../slices/loadingSlice";
-import { updatePagination } from "../api/doodleFetch";
+// import { updatePagination } from "../api/doodleFetch";
 import store from "../store";
 
-const Pagination = () => {
+const Pagination = ({totalPages, isProfile, updatePagination}) => {
   const page = useSelector((state) => state.doodle.page);
+  const currentUser = useSelector(state => state.user.current)
+
   //const page = store.getState().doodle.page
-  const totalPages = useSelector((state) => state.doodle.totalPages);
+  // const totalPages = useSelector((state) => state.doodle.totalPages);
   const dispatch = useDispatch();
 
   const handleChangePage = (num) => {
@@ -18,8 +20,13 @@ const Pagination = () => {
       if (num > 0) {
         dispatch(setLoadingTrue());
         const updatedPage = store.getState().doodle.page;
-        updatePagination(updatedPage).then((data) => {
-          dispatch(setDoodles(data));
+        updatePagination(updatedPage, currentUser.id).then((data) => {
+          if(isProfile){
+            dispatch(setUserDoodles(data));
+          }else{
+            dispatch(setDoodles(data));
+          }
+          
         }).then(() => dispatch(setLoadingFalse()));
       }
     }

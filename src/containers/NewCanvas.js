@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setModalFalse } from "../slices/modalSlice";
+import { setCanvasFalse } from "../slices/modalSlice";
 
 import CanvasDraw from "react-canvas-draw";
 import Modal from "react-bootstrap/Modal";
@@ -17,7 +17,7 @@ const NewCanvas = () => {
   const [color, setColor] = useState("#672DAC");
   const [brushRadius, setBrushRadius] = useState(5);
   const [name, setName] = useState("masterpiece name");
-  const modalStatus = useSelector((state) => state.modal.show);
+  const modalStatus = useSelector((state) => state.modal.canvasShow);
   const user = useSelector((state) => state.user.current);
   const canvasDraw = useRef(null);
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const NewCanvas = () => {
     setDoodle(JSON.parse(canvasDraw.current.getSaveData()));
     //callback
     canvasDraw.current.clear();
-    dispatch(setModalFalse())
+    dispatch(setCanvasFalse())
   };
 
   const isEmpty = (obj) => {
@@ -115,7 +115,7 @@ const NewCanvas = () => {
   return (
     <Modal
       show={modalStatus}
-      onHide={() => dispatch(setModalFalse())}
+      onHide={() => dispatch(setCanvasFalse())}
       scrollable={false}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"

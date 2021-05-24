@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
 import { doodleFetch } from "../api/doodleFetch";
+import { userDoodlesFetch } from "../api/userFetch"
 import { clearUser } from "../slices/userSlice"
 import { setLoadingFalse , setLoadingTrue} from "../slices/loadingSlice";
-import { setDoodles, resetPage } from "../slices/doodleSlice"
-import { setModalTrue } from "../slices/modalSlice"
+import { setDoodles, setUserDoodles, resetPage } from "../slices/doodleSlice"
+import { setCanvasTrue } from "../slices/modalSlice"
 // import Search from "./Search"
 import { ReactComponent as Logo } from './doodl-logo.svg';
 
@@ -23,6 +24,15 @@ const Nav = (props) =>{
     dispatch(setLoadingTrue())
     doodleFetch().then(data => {
       dispatch(setDoodles(data))
+      dispatch(resetPage())
+      dispatch(setLoadingFalse())
+    })
+  }
+
+  const goProfilePage = () =>{
+    dispatch(setLoadingTrue())
+    userDoodlesFetch(currentUser).then(data => {
+      dispatch(setUserDoodles(data))
       dispatch(resetPage())
       dispatch(setLoadingFalse())
     })
@@ -49,10 +59,10 @@ const Nav = (props) =>{
          </ul>
         <ul className="nav navbar-nav ml-auto w-100 justify-content-end">
            <li className="nav-item">
-             <Link to='/profile' value="profile" onClick={navigateProfileHome} className='nav-link'>Profile</Link>
+             <Link to='/profile' value="profile" onClick={goProfilePage} className='nav-link'>Profile</Link>
            </li>
            <li className="nav-item">
-               <button data-target="#newCanvasModal" className='nav-link new-button' onClick={()=>dispatch(setModalTrue())}>Draw Doodle</button>
+               <button data-target="#newCanvasModal" className='nav-link new-button' onClick={()=>dispatch(setCanvasTrue())}>Draw Doodle</button>
            </li>
            <li className="nav-item">
              <Link to='/' onClick={handleLogout} className='nav-link'>Log Out</Link>

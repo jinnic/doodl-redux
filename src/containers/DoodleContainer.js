@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import DoodleCard from "./DoodleCard";
 
-const DoodleContainer = () => {
-  const doodles = useSelector(state => state.doodle.all)
+const DoodleContainer = ({doodles}) => {
   const currentUser = useSelector(state => state.user.current)
   const page = useSelector((state) => state.doodle.page);
   const sliceStart = (page - 1) * 6;
@@ -12,6 +11,7 @@ const DoodleContainer = () => {
   
 
   const renderDoodle = () => {
+
     return doodles.slice(sliceStart, sliceEnd).map((doodle) => (
       <DoodleCard
         key={doodle.id}

@@ -3,17 +3,24 @@ import { createSlice } from '@reduxjs/toolkit'
 export const modalSlice = createSlice({
   name: 'modal',
   initialState: {
-    show: false
+    canvasShow: false,
+    profileFormShow: false
   },
   reducers: {
-    setModalFalse: (state) => {
-      state.show = false
+    setCanvasFalse: (state) => {
+      state.canvasShow = false
     },
-    setModalTrue: (state) => {
-      state.show = true
+    setCanvasTrue: (state) => {
+      state.canvasShow = true
+    },
+    setProfileFormFalse: (state) => {
+      state.profileFormShow = false
+    },
+    setProfileFormTrue: (state) => {
+      state.profileFormShow = true
     },
   }
 })
 
-export const { setModalFalse, setModalTrue } = modalSlice.actions;
+export const { setCanvasFalse, setCanvasTrue, setProfileFormFalse, setProfileFormTrue } = modalSlice.actions;
 export default modalSlice.reducer;

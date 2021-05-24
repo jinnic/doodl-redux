@@ -59,3 +59,15 @@ export const userUpdate = (user, id) => {
     });
 };
 
+//USER DOODLE FETCH
+export const userDoodlesFetch = (user) =>{
+  return fetch(`https://doodl-api.herokuapp.com/users/${user.id}`)
+    .then((r) => r.json())
+}
+
+export const updateProfilePagination = (page, id)=>{
+  return fetch(
+    `https://doodl-api.herokuapp.com/users/${id}/?page=${page}`
+  )
+    .then((r) => r.json())
+}

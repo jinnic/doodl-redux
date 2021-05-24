@@ -10,7 +10,8 @@ export const doodleSlice = createSlice({
     all: [],
     user: [],
     page: 1,
-    totalPages: 1 
+    totalPages: 1,
+    totalUserPages: 1
   },
   reducers:{
     setDoodles: (state, action) => {
@@ -25,7 +26,14 @@ export const doodleSlice = createSlice({
     },
     setUserDoodles: (state, action) => {
       //might need to use spread adding new payload to current state
-      state.user = action.payload
+      const combinedDoodles = [...state.user, ...action.payload.doodles];
+        const uniqueDoodles = Array.from(
+          new Set(combinedDoodles.map((a) => a.id))
+        ).map((id) => {
+          return combinedDoodles.find((a) => a.id === id);
+        });
+      state.user = uniqueDoodles
+      state.totalUserPages = action.payload.total_pages
     },
     addDoodle: (state, action) => {
       //action.payload.location === "home" => add to doodle.all
