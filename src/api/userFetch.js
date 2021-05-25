@@ -49,14 +49,6 @@ export const userUpdate = (user, id) => {
   };
   return fetch(`https://doodl-api.herokuapp.com/users/${id}`, config)
     .then((r) => r.json())
-    .then((updatedUser) => {
-      this.setState(
-        {
-          currentUser: updatedUser,
-        },
-        () => console.log("UPDATED USER", updatedUser)
-      );
-    });
 };
 
 //USER DOODLE FETCH

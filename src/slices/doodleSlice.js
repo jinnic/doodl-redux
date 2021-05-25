@@ -11,7 +11,8 @@ export const doodleSlice = createSlice({
     user: [],
     page: 1,
     totalPages: 1,
-    totalUserPages: 1
+    totalUserPages: 1,
+    currentlyEditing: {}
   },
   reducers:{
     setDoodles: (state, action) => {
@@ -37,22 +38,35 @@ export const doodleSlice = createSlice({
     },
     addDoodle: (state, action) => {
       //action.payload.location === "home" => add to doodle.all
-      // state.user = [action.payload, ...state.user]
+      state.user = [action.payload, ...state.user]
       state.all = [action.payload, ...state.all]
     },
     updateDoodle: (state, action) => {
-      const updatedDoods = state.user.map((doodle) => {
+      const updatedUserDoods = state.user.map((doodle) => {
         if (doodle.id === action.payload.id) {
           return action.payload;
         } else {
           return doodle;
         }
       });
-      state.user = updatedDoods
+      const updatedDoods = state.all.map((doodle) => {
+        if (doodle.id === action.payload.id) {
+          return action.payload;
+        } else {
+          return doodle;
+        }
+      });
+      state.all = updatedDoods
+      state.user = updatedUserDoods
     },
     deleteDoodle: (state, action) =>{
-      const updatedDoods = state.user.filter(doodle => doodle.id !== action.payload)
-      state.user = updatedDoods
+      const updatedUserDoods = state.user.filter(doodle => doodle.id !== action.payload)
+      const updatedDoods = state.all.filter(doodle => doodle.id !== action.payload)
+      state.user = updatedUserDoods
+      state.all = updatedDoods
+    },
+    setEditing: (state, action) => {
+      state.currentlyEditing = action.payload
     },
     resetPage: (state) => {
       state.page = 1;
@@ -67,5 +81,5 @@ export const doodleSlice = createSlice({
   }
 })
 
-export const { setDoodles, setUserDoodles, addDoodle, updateDoodle, deleteDoodle, resetPage, updatePage, setTotalPage } = doodleSlice.actions;
+export const { setDoodles, setUserDoodles, addDoodle, updateDoodle, deleteDoodle, setEditing, resetPage, updatePage, setTotalPage } = doodleSlice.actions;
 export default doodleSlice.reducer;

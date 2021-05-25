@@ -56,7 +56,7 @@ const SignUpIn = (props) => {
   };
 
 
-  const  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     if(toggle === 'sign up'){
       handleSignUp()

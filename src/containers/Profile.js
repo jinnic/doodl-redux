@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { Transition } from "react-transition-group";
 import DoodleContainer from "./DoodleContainer";
 import ProfileEditForm from "./ProfileEditForm";
-import DoodleCanvas from "./NewCanvas";
 import Pagination from "./Pagination";
 import Loading from "../components/Loading";
 import { setProfileFormTrue } from "../slices/modalSlice";
@@ -18,6 +17,14 @@ const Profile = () => {
   const userDoodles = useSelector(state => state.doodle.user)
   const loading = useSelector(state => state.loading.status)
   const totalUserPages = useSelector(state => state.doodle.totalUserPages)
+
+  const [showEditForm, setEditForm] = useState(false);
+
+  const onHide = () => {
+    setEditForm(false)
+  }
+
+
   //fetch user doodl on mount
   useEffect(() => {
     dispatch(setLoadingTrue())
@@ -74,21 +81,18 @@ const Profile = () => {
               <button
                 type="button"
                 className="profile-button"
-                // onClick={this.handleShow}
+                onClick={() => setEditForm(true)}
               >
                 edit
               </button>
             </div>
             <p>{currentUser.bio}</p>
             <hr id="line"></hr>
-            {/* <ProfileEditForm
-              userDelete={this.props.userDelete}
-              userUpdate={userUpdate}
-              user={user}
-              updateUserInfo={this.updateUserInfo}
-              show={this.state.showEditForm}
-              onHide={this.handleClose}
-            /> */}
+            <ProfileEditForm
+              user={currentUser}
+              show={showEditForm}
+              onHide={onHide}
+            />
           </div>
           {loading ? (
             <Loading />
@@ -115,176 +119,4 @@ const Profile = () => {
       </div>
     );
 }
-
-/*
-class Profile extends Component {
-  state = {
-    // showEditForm: false,
-    // userDoodles: [],
-    showEditCanvas: false,
-    currentlyEditing: {},
-    page: 1,
-    totalPages: null,
-    loading: "",
-    doodleAdded: false,
-  };
-
-  // componentDidMount() {
-  //   this.setState({ loading: true });
-  //   fetch(`https://doodl-api.herokuapp.com/users/${this.props.user.id}`)
-  //     .then((r) => r.json())
-  //     .then((data) => {
-  //       this.setState({
-  //         userDoodles: data.doodles,
-  //         totalPages: data.total_pages,
-  //       });
-  //     });
-  //   this.setState({ loading: false });
-  //   this.props.updateProfileClicked();
-  // }
-
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.newDoodle !== prevProps.newDoodle) {
-  //     this.addToState(this.props.newDoodle);
-  //   }
-  //   if (this.props.profileClicked !== prevProps.profileClicked) {
-  //     this.setState({ page: 1 });
-  //     this.props.updateProfileClicked();
-  //   }
-  // }
-
-  
-
-  
-
-  //DELETE
-  //remove one doodle
-  // removeFromState = (id) => {
-  //   const filtered = this.state.userDoodles.filter((d) => d.id !== id);
-
-  //   this.setState(
-  //     {
-  //       userDoodles: filtered,
-  //     },
-  //     () => {
-  //       const currPageDoods = this.state.userDoodles.length % 6;
-  //       const currPage = this.state.page;
-  //       if (currPageDoods == 0) {
-  //         if (currPage === 1) {
-  //           this.updatePagination();
-  //         } else {
-  //           this.handleChangePage(-1);
-  //           this.setState((prevState) => {
-  //             return { totalPages: prevState.totalPages - 1 };
-  //           });
-  //         }
-  //       }
-  //     }
-  //   );
-  // };
-
-  // //update likes
-  // updateLike = (doodle_id) => {
-  //   const likeObj = {
-  //     user_id: this.props.user.id,
-  //     doodle_id: doodle_id,
-  //   };
-  //   const token = localStorage.getItem("token");
-  //   const config = {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Accept: "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify(likeObj),
-  //   };
-
-  //   fetch(`https://doodl-api.herokuapp.com/doodles/${doodle_id}/likes`, config)
-  //     .then((r) => r.json())
-  //     .then((doodle) => this.updateState(doodle));
-  // };
-
-  //ADD
-  // addToState = (newDoodle) => {
-  //   const newDoodles = [newDoodle, ...this.state.userDoodles];
-  //   this.setState({
-  //     userDoodles: newDoodles,
-  //   });
-  //   if (this.state.totalPages < Math.ceil(newDoodles.length / 6)) {
-  //     this.setState({
-  //       totalPages: Math.ceil(newDoodles.length / 6),
-  //     });
-  //   }
-  //   //set state true for new doodle added notification
-  //   this.setState({
-  //     doodleAdded: true,
-  //   });
-  //   //set timeout
-  //   setTimeout(() => this.setState({ doodleAdded: false }), 3000);
-  // };
-
-  // //set state for selected doodle for editing
-  // renderExisting = (dood) => {
-  //   this.setState({
-  //     currentlyEditing: dood,
-  //   });
-  // };
-
-  // //UPDATE
-  // updateState = (updatedDoodle) => {
-  //   const updatedDoods = this.state.userDoodles.map((doodle) => {
-  //     if (doodle.id === updatedDoodle.id) {
-  //       return updatedDoodle;
-  //     } else {
-  //       return doodle;
-  //     }
-  //   });
-  //   this.setState({
-  //     userDoodles: updatedDoods,
-  //   });
-  // };
-
-
-  // handleChangePage = (num) => {
-  //   if (this.state.page + num >= 1) {
-  //     this.setState({ page: this.state.page + num }, () => {
-  //       //we only fetch on the right arrow
-  //       if (num > 0) {
-  //         this.props.updateProfileClicked();
-  //         this.updatePagination();
-  //       }
-  //     });
-  //   }
-  // };
-
-  // updatePagination = () => {
-  //   this.setState({ loading: true });
-  //   fetch(
-  //     `https://doodl-api.herokuapp.com/users/${this.props.user.id}/?page=${this.state.page}`
-  //   )
-  //     .then((r) => r.json())
-  //     .then((data) => {
-  //       //doing the below logic to prevent fetching duplicates as we move back and forth
-  //       const combinedDoodles = [...this.state.userDoodles, ...data.doodles];
-  //       const uniqueDoodles = Array.from(
-  //         new Set(combinedDoodles.map((a) => a.id))
-  //       ).map((id) => {
-  //         return combinedDoodles.find((a) => a.id === id);
-  //       });
-
-  //       this.setState({
-  //         userDoodles: uniqueDoodles,
-  //         totalPages: data.total_pages,
-  //         loading: false,
-  //       });
-  //     });
-  // };
-
-  render() {
-    
-  }
-}
-
-*/
 export default Profile;

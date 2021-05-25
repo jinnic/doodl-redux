@@ -35,6 +35,7 @@ export const deleteDoodleFetch =(id)=>{
     .then((r) => r.json())
 }
 
+
 export const updateDoodleFetch =(doodle, id)=>{
   const token = localStorage.getItem("token");
   const config = {
@@ -46,6 +47,6 @@ export const updateDoodleFetch =(doodle, id)=>{
     },
     body: JSON.stringify(doodle),
   };
-  return  fetch(`https://doodl-api.herokuapp.com/doodles/${id}`, config)
+  return fetch(`https://doodl-api.herokuapp.com/doodles/${id}`, config)
       .then((r) => r.json())
 }

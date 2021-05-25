@@ -6,11 +6,11 @@ import CanvasDraw from "react-canvas-draw";
 import Modal from "react-bootstrap/Modal";
 import { Popover, OverlayTrigger } from "react-bootstrap/";
 import { DrawingTool } from "../components/DrawingTool";
-import { setDoodles, addDoodle } from "../slices/doodleSlice";
-import { addNewDoodle } from "../api/doodleFetch";
+import { setDoodles, addDoodle, updateDoodle, setEditing } from "../slices/doodleSlice";
+import { addNewDoodle, updateDoodleFetch } from "../api/doodleFetch";
+import store from '../store'
 
-///fdsfs 
-const NewCanvas = () => {
+const Canvas = () => {
   const [width, setWidth] = useState(500);
   const [height, setHeight] = useState(400);
   const [doodle, setDoodle] = useState({});
@@ -19,8 +19,24 @@ const NewCanvas = () => {
   const [name, setName] = useState("masterpiece name");
   const modalStatus = useSelector((state) => state.modal.canvasShow);
   const user = useSelector((state) => state.user.current);
+  // const currentlyEditing = useSelector(
+  //   (state) => state.doodle.currentlyEditing
+  // );
+  const currentlyEditing = store.getState().doodle.currentlyEditing;
   const canvasDraw = useRef(null);
   const dispatch = useDispatch();
+
+  const isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
+  
+
+  // useEffect(() => {
+  //   if(!isEmpty(currentlyEditing)) {
+  //     setDoodle(currentlyEditing)
+  //   }
+  // }, [currentlyEditing]);
 
   const handleToolState = (type, value) => {
     switch (type) {
@@ -40,26 +56,9 @@ const NewCanvas = () => {
   };
 
   const handleSave = () => {
-    //save doodle data from react-canvas-draw
-    // this.setState(
-    //   {
-    //     doodle: this.saveableCanvas.getSaveData(),
-    //   },
-    //   this.addOrUpdate
-    // );
-
-    // //clear canvas
-    // this.saveableCanvas.clear();
-    // this.props.onHide();
-    console.log(JSON.parse(canvasDraw.current.getSaveData()));
     setDoodle(JSON.parse(canvasDraw.current.getSaveData()));
     //callback
-    canvasDraw.current.clear();
-    dispatch(setCanvasFalse())
-  };
-
-  const isEmpty = (obj) => {
-    return Object.keys(obj).length === 0;
+    dispatch(setCanvasFalse());
   };
 
   //this functions as a callback that only runs once doodle is updated
@@ -72,20 +71,27 @@ const NewCanvas = () => {
 
   const addOrUpdate = () => {
     let newObj = {};
-    console.log(doodle);
+
     newObj.doodle_data = doodle;
     newObj["user_id"] = user.id;
     newObj.name = name;
     newObj.width = width;
     newObj.height = height;
-    console.log(newObj);
 
-    addNewDoodle(newObj).then((newDoodle) => {
-      console.log(newDoodle);
-      dispatch(addDoodle(newDoodle));
-    });
+    if (!isEmpty(currentlyEditing)) {
+      updateDoodleFetch(newObj, currentlyEditing.id)
+      .then((updatedDoodle) => {
+        dispatch(updateDoodle(updatedDoodle));
+        dispatch(setEditing({}))
+      })
+    } else {
+      addNewDoodle(newObj).then((newDoodle) => {
+        dispatch(addDoodle(newDoodle));
+      });
+    }
     setName("masterpiece name");
-    setDoodle({})
+    setDoodle({});
+    canvasDraw.current.clear();
   };
 
   const popover = (
@@ -122,6 +128,7 @@ const NewCanvas = () => {
       centered
       className="doodle-modal"
     >
+      {console.log(currentlyEditing)}
       <Modal.Header closeButton className="">
         <section className="clear-undo">
           <OverlayTrigger trigger="click" placement="left" overlay={popover}>
@@ -145,6 +152,7 @@ const NewCanvas = () => {
           lazyRadius={0}
           canvasWidth={500}
           canvasHeight={400}
+          saveData={JSON.stringify(currentlyEditing.doodle_data)}
         />
         <DrawingTool
           color={color}
@@ -158,4 +166,4 @@ const NewCanvas = () => {
   );
 };
 
-export default NewCanvas;
+export default Canvas;

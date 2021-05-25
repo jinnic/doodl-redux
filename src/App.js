@@ -3,13 +3,15 @@ import { Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { doodleFetch, updateAppPagination } from "./api/doodleFetch";
 import { setDoodles } from './slices/doodleSlice'
+import { setLoadingTrue, setLoadingFalse } from "./slices/loadingSlice"
 import  Loading  from "./components/Loading"
 import Nav from "./components/Nav"
 import SignUpIn from "./containers/SignUpIn"
 import DoodleContainer from './containers/DoodleContainer'
 import Pagination from './containers/Pagination'
-import NewCanvas from './containers/NewCanvas'
+import Canvas from './containers/Canvas'
 import Profile from './containers/Profile'
+
 
 function App() {
   //STATE
@@ -32,8 +34,10 @@ function App() {
   // Basically wrap useEffect with if statement
   // based on router location
   useEffect(() => {
+    dispatch(setLoadingTrue())
     doodleFetch().then((data) => {
         dispatch(setDoodles(data))
+        dispatch(setLoadingFalse())
     });
   }, []);
 
@@ -46,7 +50,7 @@ function App() {
           // handleNewCanvasShow={this.handleNewCanvasShow}
           // navigateProfileHome={this.navigateProfileHome}
         />
-        <NewCanvas 
+        <Canvas 
           // user={this.state.currentUser}
           // addNewDoodle={this.addNewDoodle}
           // show={this.state.showNewCanvas}
