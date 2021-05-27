@@ -6,7 +6,7 @@ import ProfileEditForm from "./ProfileEditForm";
 import Pagination from "./Pagination";
 import Loading from "../components/Loading";
 import { setProfileFormTrue } from "../slices/modalSlice";
-import { resetPage, deleteDoodle, updateDoodle, setUserDoodles} from "../slices/doodleSlice"
+import { resetPage, deleteDoodle, updateDoodle, setUserDoodles, doodleAdded} from "../slices/doodleSlice"
 import { setLoadingTrue, setLoadingFalse } from "../slices/loadingSlice"
 import { userDoodlesFetch, updateProfilePagination} from "../api/userFetch"
 import { deleteDoodleFetch, updateDoodleFetch } from "../api/doodleFetch"
@@ -17,7 +17,7 @@ const Profile = () => {
   const userDoodles = useSelector(state => state.doodle.user)
   const loading = useSelector(state => state.loading.status)
   const totalUserPages = useSelector(state => state.doodle.totalUserPages)
-
+  const doodleAdded = useSelector(state => state.doodle.doodleAdded)
   const [showEditForm, setEditForm] = useState(false);
 
   const onHide = () => {
@@ -64,7 +64,7 @@ const Profile = () => {
   };
     return (
       <div id="profile-page">
-        {/* <Transition in={this.state.doodleAdded} timeout={500}>
+        <Transition in={doodleAdded} timeout={500}>
           {state => (
         <div class="doodle-added-notif" style={{
         ...defaultStyle,
@@ -72,7 +72,7 @@ const Profile = () => {
       }}>
        Doodl created!
       </div> )}
-      </Transition> */}
+      </Transition>
       
         <div>
           <div id="profile-info-container">

@@ -12,7 +12,8 @@ export const doodleSlice = createSlice({
     page: 1,
     totalPages: 1,
     totalUserPages: 1,
-    currentlyEditing: {}
+    currentlyEditing: {},
+    doodleAdded: false
   },
   reducers:{
     setDoodles: (state, action) => {
@@ -41,6 +42,7 @@ export const doodleSlice = createSlice({
       state.user = [action.payload.doodle, ...state.user]
       state.all = [action.payload.doodle, ...state.all]
       state.totalUserPages = action.payload.total_pages
+      state.doodleAdded = true
     },
     updateDoodle: (state, action) => {
       const updatedUserDoods = state.user.map((doodle) => {
@@ -81,6 +83,7 @@ export const doodleSlice = createSlice({
       state.totalPage = action.payload
       console.log(state.totalPage)
     }
+
   }
 })
 
