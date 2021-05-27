@@ -3,9 +3,11 @@ import CanvasDraw from "react-canvas-draw";
 import { Popover, OverlayTrigger } from 'react-bootstrap/'
 import { useRouteMatch } from "react-router-dom";
 import { deleteDoodleFetch } from '../api/doodleFetch'
-import { deleteDoodle, setEditing } from '../slices/doodleSlice'
+import { updateProfilePagination } from '../api/userFetch'
+import { deleteDoodle, setEditing, setUserDoodles, updatePage, setTotalPage} from '../slices/doodleSlice'
 import { useDispatch } from "react-redux";
 import { setCanvasTrue } from "../slices/modalSlice"
+import store from '../store'
 
 const DoodleCard = ({user, doodle}) => {
     const [likeStatus, setLikeStatus] = useState("");
@@ -52,8 +54,32 @@ const DoodleCard = ({user, doodle}) => {
 
     const handleDelete = (id) => {
       deleteDoodleFetch(id)
-        .then((data) => dispatch(deleteDoodle(data.id)));
+        .then((data) => {
+          dispatch(deleteDoodle(data.id))
+          handlePageRefresh()
+        });
     };
+    
+    //fetch more doodles when deleting a doodle
+    //so it always display 6.
+    const handlePageRefresh = () => {
+      const currentPage = store.getState().doodle.page;
+      const lastPage = store.getState().doodle.totalUserPages;
+      if(currentPage < lastPage){
+        //refetch
+        updateProfilePagination(currentPage, user.id)
+          .then(data => dispatch(setUserDoodles(data)))
+      }else if(currentPage === lastPage){
+        //do % thing when 0 then go back 1 page
+        const userDoodles = store.getState().doodle.user
+        const leftOvers = userDoodles.length % 6
+
+        if(leftOvers === 0 ){
+          dispatch(updatePage(-1));
+          dispatch(setTotalPage(lastPage -1 ));
+        }
+      }
+    }
 
     const renderButtons = () => {
         const popover = (

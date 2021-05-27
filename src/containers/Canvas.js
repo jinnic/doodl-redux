@@ -87,6 +87,7 @@ const Canvas = () => {
     } else {
       addNewDoodle(newObj).then((newDoodle) => {
         dispatch(addDoodle(newDoodle));
+        
       });
     }
     setName("masterpiece name");

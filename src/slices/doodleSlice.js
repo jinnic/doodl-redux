@@ -38,8 +38,9 @@ export const doodleSlice = createSlice({
     },
     addDoodle: (state, action) => {
       //action.payload.location === "home" => add to doodle.all
-      state.user = [action.payload, ...state.user]
-      state.all = [action.payload, ...state.all]
+      state.user = [action.payload.doodle, ...state.user]
+      state.all = [action.payload.doodle, ...state.all]
+      state.totalUserPages = action.payload.total_pages
     },
     updateDoodle: (state, action) => {
       const updatedUserDoods = state.user.map((doodle) => {
@@ -76,7 +77,9 @@ export const doodleSlice = createSlice({
       console.log(state.page)
     },
     setTotalPage: (state, action) => {
+      
       state.totalPage = action.payload
+      console.log(state.totalPage)
     }
   }
 })
