@@ -1,16 +1,16 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updatePage, setTotalPages, setDoodles, setUserDoodles } from "../slices/doodleSlice";
+import {
+  updatePage,
+  setDoodles,
+  setUserDoodles,
+} from "../slices/doodleSlice";
 import { setLoadingTrue, setLoadingFalse } from "../slices/loadingSlice";
-// import { updatePagination } from "../api/doodleFetch";
 import store from "../store";
 
-const Pagination = ({totalPages, isProfile, updatePagination}) => {
+const Pagination = ({ totalPages, isProfile, updatePagination }) => {
   const page = useSelector((state) => state.doodle.page);
-  const currentUser = useSelector(state => state.user.current)
-
-  //const page = store.getState().doodle.page
-  // const totalPages = useSelector((state) => state.doodle.totalPages);
+  const currentUser = useSelector((state) => state.user.current);
   const dispatch = useDispatch();
 
   const handleChangePage = (num) => {
@@ -20,26 +20,18 @@ const Pagination = ({totalPages, isProfile, updatePagination}) => {
       if (num > 0) {
         dispatch(setLoadingTrue());
         const updatedPage = store.getState().doodle.page;
-        updatePagination(updatedPage, currentUser.id).then((data) => {
-          if(isProfile){
-            dispatch(setUserDoodles(data));
-          }else{
-            dispatch(setDoodles(data));
-          }
-          
-        }).then(() => dispatch(setLoadingFalse()));
+        updatePagination(updatedPage, currentUser.id)
+          .then((data) => {
+            if (isProfile) {
+              dispatch(setUserDoodles(data));
+            } else {
+              dispatch(setDoodles(data));
+            }
+          })
+          .then(() => dispatch(setLoadingFalse()));
       }
     }
   };
-
-  //   updatePagination = (page) => {
-  //     fetch(`https://doodl-api.herokuapp.com/doodles/?page=${page}`)
-  //       .then((r) => r.json())
-  //       .then((data) => {
-  //         this.setState({ doodles: data.doodles, totalPages: data.total_pages });
-  //         this.setState({ loading: false });
-  //       });
-  //   };
 
   return (
     <div className="pagination-container">

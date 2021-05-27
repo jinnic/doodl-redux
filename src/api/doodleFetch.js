@@ -50,3 +50,23 @@ export const updateDoodleFetch =(doodle, id)=>{
   return fetch(`https://doodl-api.herokuapp.com/doodles/${id}`, config)
       .then((r) => r.json())
 }
+
+export const updateLikeFetch = (doodleId, userId) => {
+  const likeObj = {
+    user_id: userId,
+    doodle_id: doodleId
+  };
+  const token = localStorage.getItem("token");
+  const config = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(likeObj),
+  };
+
+  return fetch(`https://doodl-api.herokuapp.com/doodles/${doodleId}/likes`, config)
+    .then((r) => r.json())
+}

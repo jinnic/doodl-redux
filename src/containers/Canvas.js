@@ -6,7 +6,7 @@ import CanvasDraw from "react-canvas-draw";
 import Modal from "react-bootstrap/Modal";
 import { Popover, OverlayTrigger } from "react-bootstrap/";
 import { DrawingTool } from "../components/DrawingTool";
-import { setDoodles, addDoodle, updateDoodle, setEditing } from "../slices/doodleSlice";
+import { addDoodle, updateDoodle, setEditing, setDoodleAddedFalse } from "../slices/doodleSlice";
 import { addNewDoodle, updateDoodleFetch } from "../api/doodleFetch";
 import store from '../store'
 
@@ -19,9 +19,6 @@ const Canvas = () => {
   const [name, setName] = useState("masterpiece name");
   const modalStatus = useSelector((state) => state.modal.canvasShow);
   const user = useSelector((state) => state.user.current);
-  // const currentlyEditing = useSelector(
-  //   (state) => state.doodle.currentlyEditing
-  // );
   const currentlyEditing = store.getState().doodle.currentlyEditing;
   const canvasDraw = useRef(null);
   const dispatch = useDispatch();
@@ -29,14 +26,6 @@ const Canvas = () => {
   const isEmpty = (obj) => {
     return Object.keys(obj).length === 0;
   };
-
-  
-
-  // useEffect(() => {
-  //   if(!isEmpty(currentlyEditing)) {
-  //     setDoodle(currentlyEditing)
-  //   }
-  // }, [currentlyEditing]);
 
   const handleToolState = (type, value) => {
     switch (type) {
@@ -87,7 +76,7 @@ const Canvas = () => {
     } else {
       addNewDoodle(newObj).then((newDoodle) => {
         dispatch(addDoodle(newDoodle));
-        
+        setTimeout(() => dispatch(setDoodleAddedFalse()), 3000);
       });
     }
     setName("masterpiece name");
@@ -129,7 +118,6 @@ const Canvas = () => {
       centered
       className="doodle-modal"
     >
-      {console.log(currentlyEditing)}
       <Modal.Header closeButton className="">
         <section className="clear-undo">
           <OverlayTrigger trigger="click" placement="left" overlay={popover}>

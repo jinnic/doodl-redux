@@ -2,24 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { doodleFetch, updateAppPagination } from "./api/doodleFetch";
-import { setDoodles } from './slices/doodleSlice'
-import { setLoadingTrue, setLoadingFalse } from "./slices/loadingSlice"
-import  Loading  from "./components/Loading"
-import Nav from "./components/Nav"
-import SignUpIn from "./containers/SignUpIn"
-import DoodleContainer from './containers/DoodleContainer'
-import Pagination from './containers/Pagination'
-import Canvas from './containers/Canvas'
-import Profile from './containers/Profile'
-
+import { autoLogin } from "./api/authFetch";
+import { setDoodles } from "./slices/doodleSlice";
+import { setLoadingTrue, setLoadingFalse } from "./slices/loadingSlice";
+import { setUser } from "./slices/userSlice";
+import Loading from "./components/Loading";
+import Nav from "./components/Nav";
+import SignUpIn from "./containers/SignUpIn";
+import DoodleContainer from "./containers/DoodleContainer";
+import Pagination from "./containers/Pagination";
+import Canvas from "./containers/Canvas";
+import Profile from "./containers/Profile";
+import DoodleCreatedPopUp from "./components/DoodleCreatedPopUp";
 
 function App() {
   //STATE
   const [showSignUpIn, setShowSignUpIn] = useState(false);
-  const doodles = useSelector(state => state.doodle.all)
-  const totalPages = useSelector(state => state.doodle.totalPages)
-  const loading = useSelector(state => state.loading.status)
-  const currentUser = useSelector(state => state.user.current)
+  const doodles = useSelector((state) => state.doodle.all);
+  const totalPages = useSelector((state) => state.doodle.totalPages);
+  const loading = useSelector((state) => state.loading.status);
+  const currentUser = useSelector((state) => state.user.current);
   const dispatch = useDispatch();
   //MODAL
   const handleClose = () => {
@@ -34,87 +36,74 @@ function App() {
   // Basically wrap useEffect with if statement
   // based on router location
   useEffect(() => {
-    dispatch(setLoadingTrue())
-    doodleFetch().then((data) => {
-        dispatch(setDoodles(data))
-        dispatch(setLoadingFalse())
-    });
+    const token = localStorage.getItem("token");
+    dispatch(setLoadingTrue());
+    if (token) {
+      autoLogin().then((data) => {
+        dispatch(setUser(data));
+        doodleFetch().then((doodles) => {
+          dispatch(setDoodles(doodles));
+          dispatch(setLoadingFalse());
+        });
+      });
+    } else {
+      doodleFetch().then((data) => {
+        dispatch(setDoodles(data));
+        dispatch(setLoadingFalse());
+      });
+    }
   }, []);
 
   return (
-    
     <>
-        <Nav
-          // getSearchTerm={this.getSearchTerm}
-          handleShow={handleShow}
-          // handleNewCanvasShow={this.handleNewCanvasShow}
-          // navigateProfileHome={this.navigateProfileHome}
-        />
-        <Canvas 
-          // user={this.state.currentUser}
-          // addNewDoodle={this.addNewDoodle}
-          // show={this.state.showNewCanvas}
-          // onHide={this.handleNewCanvasClose}
-        /> 
+      <Nav handleShow={handleShow} />
+      <Canvas />
 
-        <main>
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={() => (
-                <>
-                  <SignUpIn
-                    // handleLogin={handleLogin}
-                    onHide={handleClose}
-                    show={showSignUpIn}
-                  />
-                  {loading ? (
-                    <Loading />
-                  ) : (
-                    <>
-                      <DoodleContainer doodles={doodles}
+      <main>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <>
+                <SignUpIn onHide={handleClose} show={showSignUpIn} />
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <DoodleCreatedPopUp />
+                    <DoodleContainer doodles={doodles} />
+                    {totalPages <= 1 ? (
+                      ""
+                    ) : (
+                      <Pagination
+                        totalPages={totalPages}
+                        isProfile={false}
+                        updatePagination={updateAppPagination}
                       />
-                      {totalPages <= 1  ? (
-                        ""
-                      ) : (
-                        <Pagination totalPages={totalPages} isProfile={false} updatePagination={updateAppPagination}/>
-                      )}
-                    </>
-                  )}
-                </>
-              )}
-            />
-            <Route
-              path="/profile"
-              render={(routeProps) => (
-                <>
-                  {!currentUser ? (
-                    <Loading />
-                  ) : (
-                    <>
-                      <Profile
-                        // user={this.state.currentUser}
-                        // updateLike={this.updateLike}
-                        // handleNew={this.handleAddNewDoodle}
-                        // userUpdate={this.userUpdate}
-                        // userDelete={this.userDelete}
-                        // renderExisting={this.renderExisting}
-                        // handleEditCanvasShow={this.handleEditCanvasShow}
-                        // newDoodle={this.state.newDoodleProfile}
-                        // updateProfileClicked={this.updateProfileClicked}
-                        // profileClicked={this.state.profileClicked}
-                        // // navigateProfileHome={this.navigateProfileHome()}
-                        // {...routeProps}
-                      />
-                    </>
-                  )}
-                </>
-              )}
-            />
-          </Switch>
-        </main>
-      </>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          />
+          <Route
+            path="/profile"
+            render={(routeProps) => (
+              <>
+                {!currentUser ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <Profile />
+                  </>
+                )}
+              </>
+            )}
+          />
+        </Switch>
+      </main>
+    </>
   );
 }
 

@@ -37,6 +37,9 @@ export const doodleSlice = createSlice({
       state.user = uniqueDoodles
       state.totalUserPages = action.payload.total_pages
     },
+    clearUserDoodles: (state) => {
+      state.user = [];
+    },
     addDoodle: (state, action) => {
       //action.payload.location === "home" => add to doodle.all
       state.user = [action.payload.doodle, ...state.user]
@@ -76,16 +79,22 @@ export const doodleSlice = createSlice({
     },
     updatePage: (state, action) => {
       state.page += action.payload
-      console.log(state.page)
     },
     setTotalPage: (state, action) => {
       
       state.totalPage = action.payload
+    },
+    setTotalUserPage: (state, action) => {
+      
+      state.totalUserPages = action.payload
       console.log(state.totalPage)
+    },
+    setDoodleAddedFalse: (state) => {
+      state.doodleAdded = false;
     }
 
   }
 })
 
-export const { setDoodles, setUserDoodles, addDoodle, updateDoodle, deleteDoodle, setEditing, resetPage, updatePage, setTotalPage } = doodleSlice.actions;
+export const { setDoodles, setUserDoodles, clearUserDoodles, addDoodle, updateDoodle, deleteDoodle, setEditing, resetPage, updatePage, setTotalPage, setTotalUserPage, setDoodleAddedFalse } = doodleSlice.actions;
 export default doodleSlice.reducer;
