@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector  } from "react-redux";
 import DoodleCard from "./DoodleCard";
 
 const DoodleContainer = ({doodles}) => {

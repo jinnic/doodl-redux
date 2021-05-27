@@ -5,7 +5,7 @@ import { useRouteMatch } from "react-router-dom";
 import { deleteDoodleFetch } from '../api/doodleFetch'
 import { updateProfilePagination } from '../api/userFetch'
 import { deleteDoodle, setEditing, setUserDoodles, updatePage, setTotalPage} from '../slices/doodleSlice'
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setCanvasTrue } from "../slices/modalSlice"
 import store from '../store'
 
@@ -15,6 +15,7 @@ const DoodleCard = ({user, doodle}) => {
     const [height, setHeight] = useState(321);
     const canvasDraw = useRef(null);
     const dispatch = useDispatch()
+    const page = useSelector(state => state.doodle.page)
     let match = useRouteMatch("/profile");
 
     useEffect(() => {
@@ -65,11 +66,11 @@ const DoodleCard = ({user, doodle}) => {
     const handlePageRefresh = () => {
       const currentPage = store.getState().doodle.page;
       const lastPage = store.getState().doodle.totalUserPages;
-      if(currentPage < lastPage){
+      if(page < lastPage){
         //refetch
         updateProfilePagination(currentPage, user.id)
           .then(data => dispatch(setUserDoodles(data)))
-      }else if(currentPage === lastPage){
+      }else if(page === lastPage){
         //do % thing when 0 then go back 1 page
         const userDoodles = store.getState().doodle.user
         const leftOvers = userDoodles.length % 6
