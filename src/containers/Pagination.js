@@ -20,7 +20,7 @@ const Pagination = ({ totalPages, isProfile, updatePagination }) => {
       if (num > 0) {
         dispatch(setLoadingTrue());
         const updatedPage = store.getState().doodle.page;
-        updatePagination(updatedPage, currentUser.id)
+        updatePagination(updatedPage, currentUser ? currentUser.id : 0)
           .then((data) => {
             if (isProfile) {
               dispatch(setUserDoodles(data));
