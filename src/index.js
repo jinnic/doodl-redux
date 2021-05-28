@@ -1,13 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+// import 'bootstrap/dist/js/bootstrap.bundle.min';
 // import "./styles/index.css";
-import './styles/main.scss'
+// import './styles/main.scss'
 import App from "./App";
 import store from "./store";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import './styles/main.scss'
 
 ReactDOM.render(
   <React.StrictMode>

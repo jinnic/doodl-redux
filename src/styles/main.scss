@@ -1,5 +1,12 @@
+
+
+// code {
+//   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+//     monospace;
+// }
+
 @import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
 
 //colors
@@ -18,6 +25,20 @@ $general-font: 18px;
 $button-font: 15px;
 $nav-font: 20px;
 $smaller-font: 12px;
+
+body {
+  color: $primary;
+  font-weight: 500;
+  background-color: $primary;
+  font-family: "Roboto", sans-serif;
+  height: 100%;
+  min-height: 100vh;
+  position: relative;
+  border: 1px solid $primary;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 //removing outlines and other input edits
 input:focus {
@@ -38,6 +59,7 @@ input::-webkit-color-swatch {
   border-radius: $button-radius;
   color: $primary;
   background-color: transparent;
+  font-weight: 400;
 }
 
 .button:hover {
@@ -57,17 +79,6 @@ input::-webkit-color-swatch {
 .profile-button:hover {
   background-color: $secondary;
   color: $primary;
-}
-
-body {
-  color: $primary;
-  font-weight: 500;
-  background-color: $primary;
-  font-family: "Roboto", sans-serif;
-  height: 100%;
-  min-height: 100vh;
-  position: relative;
-  border: 1px solid $primary;
 }
 
 main {
@@ -184,10 +195,17 @@ button.nav-link {
     background-color: $secondary;
     padding-bottom: 2rem;
   }
+
+  #submitBtn {
+    margin-top: 1rem;
+  }
 }
 
 #signModal,
 #profileModal {
+  input {
+    margin-bottom: .5rem;
+  }
   .modal-header {
     background-color: $primary;
     color: $secondary;
@@ -198,7 +216,11 @@ button.nav-link {
   .close {
     color: $secondary;
     text-shadow: 0 1px 0 $primary;
-    opacity: 0.8;
+    opacity: 1;
+    background: transparent;
+    border: none;
+    font-weight: 700;
+    font-size: 1.5rem;
   }
 }
 
@@ -231,43 +253,66 @@ button.nav-link {
   background-color: transparent;
 }
 
-.hr-text {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  border: 0;
-  line-height: 1em;
-  position: relative;
-  outline: 0;
-  border: 0;
-  color: $primary;
-  text-align: center;
-  height: 1.5em;
-  opacity: 1;
+.or-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 1.2rem 0;
 
-  &:before {
-    content: "";
-    // use the linear-gradient for the fading effect
-    // use a solid background color for a solid bar
+  span {
+    width: 45%;
     background: $primary;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 100%;
     height: 1px;
+    display: inline-block;
+    align-self: center;
   }
 
-  &:after {
-    content: attr(data-content);
-    position: relative;
+  section {
     display: inline-block;
-    color: $primary;
-
-    padding: 0 0.5em;
-    line-height: 1.5em;
-    // this is really the only tricky part, you need to specify the background color of the container element...
-    background-color: $secondary;
   }
 }
+
+// .hr-text {
+//   margin-top: 2rem;
+//   margin-bottom: 2rem;
+//   border: 0;
+//   line-height: 1em;
+//   position: relative;
+//   outline: 0;
+//   border: 0;
+//   color: $primary;
+//   text-align: center;
+//   height: 1.5em;
+//   opacity: 1;
+
+//   &:before {
+//     content: "";
+//     // use the linear-gradient for the fading effect
+//     // use a solid background color for a solid bar
+//     background: $primary;
+//     // position: absolute;
+//     // left: 0;
+//     // top: 50%;
+//     width: 100%;
+//     height: 10px;
+//     color: blue;
+//     overflow: visible;
+//     border: 1px solid green;
+//   }
+
+//   &:after {
+//     content: "or";
+//     position: relative;
+//     display: inline-block;
+//     color: red;
+//     z-index: 10;
+//     padding: 0 0.5em;
+//     font-size: 5rem;
+//     line-height: 1.5em;
+//     // this is really the only tricky part, you need to specify the background color of the container element...
+//     background-color: $secondary;
+//   }
+// }
 
 // signModal && profileModal ends
 
@@ -493,9 +538,18 @@ p {
   padding: 0;
 }
 
-.close {
+.doodle-modal .close {
   color: $primary;
   opacity: 1;
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: -1rem auto -.8rem auto;
+}
+
+.sr-only {
+  display: none;
 }
 
 .clear-undo {
@@ -512,6 +566,10 @@ p {
   justify-content: space-between;
   padding: 10px;
   align-items: flex-end;
+
+  label {
+    margin-bottom: .5rem;
+  }
 }
 
 .tool-container input {
@@ -531,9 +589,12 @@ p {
 
 input[type="color"] {
   width: 45px;
-  color: $light-accent;
+  color: $primary;
+  background-color: $secondary;
   height: 25px;
-  padding: 0;
+  padding: 4px 2px;
+  margin-bottom: 0px;
+  border-bottom: 2px solid $primary;
 }
 
 input[type="color"]:hover {
@@ -677,3 +738,4 @@ footer {
     margin-bottom: 1.5rem;
   }
 }
+

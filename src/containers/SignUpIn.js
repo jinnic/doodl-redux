@@ -131,7 +131,12 @@ const SignUpIn = (props) => {
             {toggle === "sign up" ? "Sign up" : "Log In"}
           </button>
         </form>
-        <hr className="hr-text" data-content="or" />
+        {/* <hr className="hr-text" data-content="or" /> */}
+        <div className="or-container">
+          <span></span>
+          <section>or</section>
+          <span></span>
+        </div>
         <button
           onClick={handleToggle}
           className="sign-toogle-button mx-auto d-block"
