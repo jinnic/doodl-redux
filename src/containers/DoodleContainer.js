@@ -17,7 +17,15 @@ const DoodleContainer = ({ doodles }) => {
 
   return (
     <div className="">
-      <div className="flex-container">{renderDoodle()}</div>
+      <div className="flex-container">
+        {doodles.length === 0 ? (
+          <div className="empty-container">
+            Draw a doodle and it'll appear here!
+          </div>
+        ) : (
+          renderDoodle()
+        )}
+      </div>
     </div>
   );
 };

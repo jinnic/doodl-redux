@@ -14,6 +14,7 @@ import Pagination from "./containers/Pagination";
 import Canvas from "./containers/Canvas";
 import Profile from "./containers/Profile";
 import DoodleCreatedPopUp from "./components/DoodleCreatedPopUp";
+import Footer from "./components/Footer";
 
 function App() {
   //STATE
@@ -103,6 +104,7 @@ function App() {
           />
         </Switch>
       </main>
+      <Footer/>
     </>
   );
 }
