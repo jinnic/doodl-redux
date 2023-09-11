@@ -1,6 +1,6 @@
 //USER SIGN IN
 export const signIn = (data) => {
-    return fetch(`https://doodl-api.herokuapp.com/login`, {
+    return fetch(`/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -13,7 +13,7 @@ export const signIn = (data) => {
 
 //SIGN UP
 export const signUp = (data) => {
-  return fetch(`https://doodl-api.herokuapp.com/users`, {
+  return fetch(`/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -47,19 +47,19 @@ export const userUpdate = (user, id) => {
 
     body: JSON.stringify(user),
   };
-  return fetch(`https://doodl-api.herokuapp.com/users/${id}`, config)
+  return fetch(`/users/${id}`, config)
     .then((r) => r.json())
 };
 
 //USER DOODLE FETCH
 export const userDoodlesFetch = (user) =>{
-  return fetch(`https://doodl-api.herokuapp.com/users/${user.id}`)
+  return fetch(`/users/${user.id}`)
     .then((r) => r.json())
 }
 
 export const updateProfilePagination = (page, id)=>{
   return fetch(
-    `https://doodl-api.herokuapp.com/users/${id}/?page=${page}`
+    `/users/${id}/?page=${page}`
   )
     .then((r) => r.json())
 }

@@ -1,10 +1,10 @@
 export const doodleFetch = () => {
-    return fetch("https://doodl-api.herokuapp.com/doodles")
+    return fetch("/doodles")
       .then((r) => r.json())
   };
 
 export const updateAppPagination = (page, id=0) => {
-    return fetch(`https://doodl-api.herokuapp.com/doodles/?page=${page}`)
+    return fetch(`/doodles/?page=${page}`)
       .then((r) => r.json())
 };
 
@@ -20,13 +20,13 @@ export const addNewDoodle = (doodle) => {
       },
       body: JSON.stringify(doodle),
     };
-    return fetch("https://doodl-api.herokuapp.com/doodles", config)
+    return fetch("/doodles", config)
       .then((r) => r.json())
   };
 
 export const deleteDoodleFetch =(id)=>{
   const token = localStorage.getItem("token");
-  return fetch(`https://doodl-api.herokuapp.com/doodles/${id}`, {
+  return fetch(`/doodles/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -47,7 +47,7 @@ export const updateDoodleFetch =(doodle, id)=>{
     },
     body: JSON.stringify(doodle),
   };
-  return fetch(`https://doodl-api.herokuapp.com/doodles/${id}`, config)
+  return fetch(`/doodles/${id}`, config)
       .then((r) => r.json())
 }
 
@@ -67,6 +67,6 @@ export const updateLikeFetch = (doodleId, userId) => {
     body: JSON.stringify(likeObj),
   };
 
-  return fetch(`https://doodl-api.herokuapp.com/doodles/${doodleId}/likes`, config)
+  return fetch(`/doodles/${doodleId}/likes`, config)
     .then((r) => r.json())
 }
