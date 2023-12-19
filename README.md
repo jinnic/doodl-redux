@@ -1,8 +1,10 @@
-# Doodl - Redux Rebuild #
-by [Hyojin](https://github.com/jinnic) and [Aleksa](https://github.com/aleksarad) 💜
+# Doodl - Redux Rebuild 
+Doodl is a drawing app written in React with a Ruby on Rails backend. 
 
 
 [Live @d00dl.netlify.app](https://d00dl.netlify.app/) 
+<br/>
+
 <kbd>
     <a href="https://youtu.be/D8xgX4vnICM">
         <img src="public/doodl.jpg">
@@ -10,8 +12,6 @@ by [Hyojin](https://github.com/jinnic) and [Aleksa](https://github.com/aleksarad
 </kbd>
 
 ### About ###
-
-Doodl is a drawing app written in React with a Ruby on Rails backend. 
 
 Doodl allows a user to:
 * Sign up and create an account.
