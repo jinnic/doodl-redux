@@ -1,5 +1,5 @@
 # Doodl - Redux Rebuild 
-Doodl is a drawing app written in React with a Ruby on Rails backend. 
+A full-stack drawing web application to share and create doodles. Featuring account authentication and full CRUD. Built with Ruby on Rails, ReactJS, Redux, React Canvas Draw, and PostgreSQL.
 
 
 [Live @d00dl.netlify.app](https://d00dl.netlify.app/) 
