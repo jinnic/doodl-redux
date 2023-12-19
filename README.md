@@ -7,7 +7,7 @@ Doodl is a drawing app written in React with a Ruby on Rails backend.
 
 <kbd>
     <a href="https://youtu.be/D8xgX4vnICM">
-        <img src="public/doodl.jpg">
+        <img src="https://github.com/jinnic/doodl-frontend/raw/master/public/doodl.jpg">
     </a>
 </kbd>
 
